@@ -1,0 +1,14 @@
+{
+  "extends": "airbnb/base",
+  "rules": {
+    "id-length": 0,
+    "no-shadow": [
+      2,
+      {
+        "allow": [
+          "err"
+        ]
+      }
+    ]
+  }
+}
