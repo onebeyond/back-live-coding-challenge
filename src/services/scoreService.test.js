@@ -1,7 +1,7 @@
-const { createLoveScore, createFifteenScore, createThirtyScore, createFortyScore, createDeuceScore, createAdvantageScore } = require('./scoreFactory')();
+const { createLoveScore, createFifteenScore, createThirtyScore, createFortyScore, createDeuceScore, createAdvantageScore } = require('./scoreService')();
 const ScoreName = require('../constants/ScoreNames');
 
-describe('Score Factory Tests', () => {
+describe('Score Service Tests', () => {
     describe('Love Score', () => {
         it('should move to Fifteen if win a ball', () => {
             const opponentScore = ScoreName.Love;

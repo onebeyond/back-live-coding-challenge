@@ -3,30 +3,28 @@ const { createPlayer } = require('../factories/playerFactory')();
 const { createGame } = require('../factories/gameFactory')();
 
 module.exports = () => {
+    const handlePlayerScored = (player, playerId, opponentScore) => player.id === playerId
+        ? createPlayer({
+            ...player,
+            score: player.score.winBall(opponentScore),
+        }) : createPlayer(player);
+
+    const handleOpponentPlayerScored = (player, playerId, opponentScore) => player.id !== playerId
+        ? createPlayer({
+            ...player,
+            score: player.score.loseBall(opponentScore),
+        }) : createPlayer(player);
 
     const addScoreEvent = (_game) => (playerId) => {
-        const handlePlayerScored = (_player, _playerId, _opponentScore) => _player.id === _playerId
-            ? createPlayer({
-                ..._player,
-                score: _player.score.winBall(_opponentScore),
-            }) : createPlayer(_player);
-
-        const handleOpponentPlayerScore = (_player, _playerId, _opponentScore) => _player.id !== _playerId
-            ? createPlayer({
-                ..._player,
-                score: _player.score.loseBall(_opponentScore),
-            }) : createPlayer(_player);
-
         let game = { ..._game };
-
         game = createGame({
             player1: handlePlayerScored(game.player1, playerId, game.player2.score.name),
             player2: handlePlayerScored(game.player2, playerId, game.player1.score.name),
         });
 
         game = createGame({
-            player1: handleOpponentPlayerScore(game.player1, playerId, game.player2.score.name),
-            player2: handleOpponentPlayerScore(game.player2, playerId, game.player1.score.name),
+            player1: handleOpponentPlayerScored(game.player1, playerId, game.player2.score.name),
+            player2: handleOpponentPlayerScored(game.player2, playerId, game.player1.score.name),
         });
 
         return game;
@@ -46,8 +44,6 @@ module.exports = () => {
     return {
         getInitialGameState,
         addScoreEvent,
-        createGame,
-        createPlayer,
     }
 }
 

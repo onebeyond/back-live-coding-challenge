@@ -1,5 +1,7 @@
-const { addScoreEvent, createGame, createPlayer } = require('./gameService')();
-const { createLoveScore, createFifteenScore, createThirtyScore, createFortyScore, createDeuceScore, createAdvantageScore } = require('../factories/scoreFactory')();
+const { addScoreEvent } = require('./gameService')();
+const { createGame } = require('../factories/gameFactory')();
+const { createPlayer } = require('../factories/playerFactory')();
+const { createLoveScore, createFifteenScore, createThirtyScore, createFortyScore, createDeuceScore, createAdvantageScore } = require('./scoreService')();
 const ScoreNames = require('../constants/ScoreNames');
 
 describe('Game Service Tests', () => {
