@@ -1,20 +1,37 @@
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 4000
+const express = require('express');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const cors = require('cors');
 
-app.get('/game/:id', (req, res) => {
-    //TODO: Create a new endpoint to get a game score
-    res.send()
-})
+module.exports = ({ gameService }) => {
+    const port = process.env.PORT || 4000;
+    const app = express();
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(helmet());
+    app.use(cors());
 
-app.post('/game', (req, res) => {
-    res.send();
-})
+    app.get('/game/:id', async (req, res) => {
+        const {params: { id }} = req;
+        const game = await gameService.getGame(Number(id));
+        res.send(game);
+    });
 
-app.post('/game/point', (req, res) => {
-    res.send();
-})
+    app.post('/game', async (req, res) => {
+        const { body } = req;
+        await gameService.storeGame(body);
+        res.send(body);
+    });
 
-app.listen(port, () => {
-    console.log(`Tennis Game listening on port ${port}`)
-})
+    app.post('/game/point', async (req, res) => {
+        const { body } = req;
+        await gameService.storeGamePoint(body);
+        res.send();
+    });
+
+    app.listen(port, () => {
+        console.log(`Tennis Game listening on port ${port}`)
+    });
+};
+
+
