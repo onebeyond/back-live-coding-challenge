@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "infra:up": "docker-compose --file ./docker/docker-compose.yml up -d --force-recreate",
+    "infra:down": "docker-compose --file ./docker/docker-compose.yml down",
     "start": "node index.js",
     "test": "jest ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "mongodb": "^4.4.1"
   },
   "devDependencies": {
     "jest": "^26.6.3"
