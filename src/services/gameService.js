@@ -1,6 +1,7 @@
 const { createPlayer } = require('../factories/playerFactory')();
 const { createGame } = require('../factories/gameFactory')();
-const { createNewGameEvent, createGamePointEvent, GameEvents } = require('../factories/gameEventFactory')();
+const GameEventTypes =  require('../constants/GameEventTypes');
+const { createNewGameEvent, createGamePointEvent } = require('../factories/gameEventFactory')();
 
 module.exports = ({ storage, scoreService }) => {
     const handlePlayerScored = (player, playerId, opponentScore) => player.id === playerId
@@ -35,8 +36,8 @@ module.exports = ({ storage, scoreService }) => {
     const getGame = async (id) => {
         const gameEvents = await storage.getGameEvents(id);
 
-        const newGame = gameEvents.find(event => event.type === GameEvents.NewGame);
-        const gamePoints = gameEvents.filter(event => event.type === GameEvents.GamePoint);
+        const newGame = gameEvents.find(event => event.type === GameEventTypes.NewGame);
+        const gamePoints = gameEvents.filter(event => event.type === GameEventTypes.GamePoint);
 
         let game = getInitialGameState(newGame.player1Id, newGame.player2Id);
         game = gamePoints.reduce((_game, event) => addScoreEvent(_game)(event.playerId), game);
@@ -62,8 +63,6 @@ module.exports = ({ storage, scoreService }) => {
     const storeGamePoint = async (args) => storage.saveGameEvent(createGamePointEvent(args));
 
     return {
-        getInitialGameState,
-        addScoreEvent,
         storeGame,
         storeGamePoint,
         getGame,

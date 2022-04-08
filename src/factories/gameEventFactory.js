@@ -1,11 +1,8 @@
-module.exports = () => {
-    const GameEvents = {
-        NewGame: 'new_game',
-        GamePoint: 'game_point',
-    };
+const GameEventTypes = require('../constants/GameEventTypes');
 
+module.exports = () => {
     const createNewGameEvent = ({ id, player1Id, player2Id, ts }) => ({
-        type: GameEvents.NewGame,
+        type: GameEventTypes.NewGame,
         id,
         player1Id,
         player2Id,
@@ -13,14 +10,13 @@ module.exports = () => {
     });
 
     const createGamePointEvent = ({ id, playerId, ts }) => ({
-        type: GameEvents.GamePoint,
+        type: GameEventTypes.GamePoint,
         id,
         playerId,
         ts
     });
 
     return {
-        GameEvents,
         createNewGameEvent,
         createGamePointEvent
     }
