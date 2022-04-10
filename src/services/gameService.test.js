@@ -6,138 +6,180 @@ const storageMock = {
   getGameEvents: jest.fn(),
   saveGameEvent: jest.fn(),
 };
-const { getGame } = require('./gameService')({ scoreService, storage: storageMock });
+const { getGame, storeGame, storeGamePoint } = require('./gameService')({ scoreService, storage: storageMock });
 
-describe('Game Service Tests', () => {
-  const gameId = 1;
-  const player1Id = 1;
-  const player2Id = 2;
-  const currentTs = new Date();
+beforeEach(() => {
+  jest.resetAllMocks();
+});
 
-  it('should be Fifteen-Love if game is Love-Love and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-    ]);
+describe('Game Service', () => {
+  describe('getGame', () => {
+    const gameId = 1;
+    const player1Id = 1;
+    const player2Id = 2;
+    const currentTs = new Date();
 
-    const game = await getGame(gameId);
+    it('should be Fifteen-Love if game is Love-Love and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+      ]);
 
-    expect(game.player1.score.name).toBe(ScoreNames.Fifteen);
-    expect(game.player2.score.name).toBe(ScoreNames.Love);
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Fifteen);
+      expect(game.player2.score.name).toBe(ScoreNames.Love);
+    });
+
+    it('should be Thirty-Love if game is Fifteen-Love and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Thirty);
+      expect(game.player2.score.name).toBe(ScoreNames.Love);
+    });
+
+    it('should be Forty-Love if game is Thirty-Love and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Forty);
+      expect(game.player2.score.name).toBe(ScoreNames.Love);
+    });
+
+    it('should be Deuce-Deuce if game is Thirty-Forty and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 6000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Deuce);
+      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+    });
+
+    it('should win the game if game is Forty-Love and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 4000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.GameWin);
+      expect(game.player2.score.name).toBe(ScoreNames.Love);
+    });
+
+    it('should be Advantage-Deuce if game is Deuce-Deuce and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Advantage);
+      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+    });
+
+    it('should be Deuce-Deuce if game is Advantage-Deuce and player 2 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 8000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.Deuce);
+      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+    });
+
+    it('should win the game if game is Advantage-Deuce and player 1 scores', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
+        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 8000) }),
+      ]);
+
+      const game = await getGame(gameId);
+
+      expect(game.player1.score.name).toBe(ScoreNames.GameWin);
+      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+    });
+
+    it('should throw an error if no newGame event is stored', async () => {
+      storageMock.getGameEvents.mockReturnValueOnce([
+        createGamePointEvent({ id: gameId, playerId: player1Id, ts: currentTs }),
+      ]);
+      await expect(getGame(gameId)).rejects.toThrowError(`Game with id ${gameId} not found`);
+    });
   });
 
-  it('should be Thirty-Love if game is Fifteen-Love and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-    ]);
+  describe('storeGame', () => {
+    const gameId = 1;
+    const player1Id = 1;
+    const player2Id = 2;
+    const currentTs = new Date();
 
-    const game = await getGame(gameId);
+    it('should store a new game', async () => {
+      const newGameEvent = createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs });
+      await storeGame(newGameEvent);
 
-    expect(game.player1.score.name).toBe(ScoreNames.Thirty);
-    expect(game.player2.score.name).toBe(ScoreNames.Love);
+      expect(storageMock.saveGameEvent.mock.calls[0][0]).toStrictEqual(newGameEvent);
+    });
   });
 
-  it('should be Forty-Love if game is Thirty-Love and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
-    ]);
+  describe('storeGamePoint', () => {
+    const gameId = 1;
+    const playerId = 1;
+    const currentTs = new Date();
 
-    const game = await getGame(gameId);
+    it('should store a new game', async () => {
+      const gamePointEvent = createGamePointEvent({ id: gameId, playerId, ts: currentTs });
+      await storeGamePoint(gamePointEvent);
 
-    expect(game.player1.score.name).toBe(ScoreNames.Forty);
-    expect(game.player2.score.name).toBe(ScoreNames.Love);
-  });
-
-  it('should be Deuce-Deuce if game is Thirty-Forty and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 6000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-    ]);
-
-    const game = await getGame(gameId);
-
-    expect(game.player1.score.name).toBe(ScoreNames.Deuce);
-    expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-  });
-
-  it('should win the game if game is Forty-Love and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 4000) }),
-    ]);
-
-    const game = await getGame(gameId);
-
-    expect(game.player1.score.name).toBe(ScoreNames.GameWin);
-    expect(game.player2.score.name).toBe(ScoreNames.Love);
-  });
-
-  it('should be Advantage-Deuce if game is Deuce-Deuce and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-    ]);
-
-    const game = await getGame(gameId);
-
-    expect(game.player1.score.name).toBe(ScoreNames.Advantage);
-    expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-  });
-
-  it('should be Deuce-Deuce if game is Advantage-Deuce and player 2 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 8000) }),
-    ]);
-
-    const game = await getGame(gameId);
-
-    expect(game.player1.score.name).toBe(ScoreNames.Deuce);
-    expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-  });
-
-  it('should win the game if game is Advantage-Deuce and player 1 scores', async () => {
-    storageMock.getGameEvents.mockReturnValueOnce([
-      createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-      createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-      createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 8000) }),
-    ]);
-
-    const game = await getGame(gameId);
-
-    expect(game.player1.score.name).toBe(ScoreNames.GameWin);
-    expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+      expect(storageMock.saveGameEvent.mock.calls[0][0]).toStrictEqual(gamePointEvent);
+    });
   });
 });
+
+

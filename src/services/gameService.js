@@ -2,6 +2,7 @@ const { createPlayer } = require('../factories/playerFactory')();
 const { createGame } = require('../factories/gameFactory')();
 const GameEventTypes =  require('../constants/GameEventTypes');
 const { createNewGameEvent, createGamePointEvent } = require('../factories/gameEventFactory')();
+const { NotFoundError } = require('../errors');
 
 module.exports = ({ storage, scoreService }) => {
     const handlePlayerScored = (player, playerId, opponentScore) => player.id === playerId
@@ -37,6 +38,11 @@ module.exports = ({ storage, scoreService }) => {
         const gameEvents = await storage.getGameEvents(id);
 
         const newGame = gameEvents.find(event => event.type === GameEventTypes.NewGame);
+
+        if (!newGame) {
+            throw new NotFoundError(`Game with id ${id} not found`);
+        }
+
         const gamePoints = gameEvents.filter(event => event.type === GameEventTypes.GamePoint);
 
         let game = getInitialGameState(newGame.player1Id, newGame.player2Id);
@@ -44,8 +50,6 @@ module.exports = ({ storage, scoreService }) => {
 
         return game;
     }
-
-
 
     const getInitialGameState = (player1Id, player2Id) => createGame({
         player1: createPlayer({
