@@ -73,6 +73,7 @@ module.exports = ({ storage, scoreService }) => {
         storeGame,
         storeGamePoint,
         getGame,
+        addScoreEvent,
     };
 };
 
