@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./docs/swagger/swagger.yml');
 
 module.exports = () => {
     const port = process.env.PORT || 4000;
@@ -10,6 +13,7 @@ module.exports = () => {
     app.use(bodyParser.json());
     app.use(helmet());
     app.use(cors());
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     app.listen(port, () => {
         console.log(`Tennis Game listening on port ${port}`)

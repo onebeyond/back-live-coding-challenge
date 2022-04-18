@@ -1,0 +1,189 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger back-live-coding-challenge
+  description: Documentation for back-live-coding-challenge synchronous api
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: author
+    email: author@domain.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /game:
+    post:
+      tags:
+        - Game
+      description: Store a new game
+      operationId: new-game
+      requestBody:
+        description: New game event
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewGameEvent'
+      responses:
+        '200':
+          description: Succesful response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /game/point:
+    post:
+      tags:
+        - Game
+      description: Store a game point
+      operationId: game-point
+      requestBody:
+        description: Game point event
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GamePointEvent'
+      responses:
+        '200':
+          description: Succesful response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /game/{id}:
+    get:
+      tags:
+        - Game
+      description: Get a game
+      operationId: get-game
+      parameters:
+        - name: id
+          in: path
+          description: Game id
+          required: true
+          schema:
+            type: number
+          style: simple
+      responses:
+        '200':
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Game:
+      type: object
+      required:
+        - id
+        - player1
+        - player2
+      properties:
+        id:
+          type: number
+        player1:
+          $ref: '#/components/schemas/Player'
+        player2:
+          $ref: '#/components/schemas/Player'
+      example:
+        id: 1
+        player1:
+          id: 1
+          score:
+            name: "Love"
+        player2:
+          id: 2
+          score:
+            name: "Thirty"
+    Player:
+      type: object
+      required:
+        - id
+        - score
+      properties:
+        id:
+          type: number
+        score:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+      example:
+        id: 1
+        score:
+          name: "Love"
+    NewGameEvent:
+      type: object
+      required:
+        - id
+        - player1Id
+        - player2Id
+        - timestamp
+      properties:
+        id:
+          type: number
+        player1Id:
+          type: number
+        player2Id:
+          type: number
+        timestamp:
+          type: string
+      example:
+        id: 1
+        player1Id: 1
+        player2Id: 1
+        timestamp: "2022-04-04T16:00:00Z"
+    GamePointEvent:
+      type: object
+      required:
+        - id
+        - playerId
+        - timestamp
+      properties:
+        id:
+          type: number
+        playerId:
+          type: number
+        timestamp:
+          type: string
+      example:
+        id: 1
+        playerId: 1
+        timestamp: "2022-04-04T16:01:00Z"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    CustomError:
+      type: object
+      required:
+        - message
+        - extra
+      properties:
+        message:
+          type: string
+        extra:
+          type: string
