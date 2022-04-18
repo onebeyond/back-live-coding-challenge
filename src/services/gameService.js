@@ -18,11 +18,13 @@ module.exports = ({ storage, scoreService }) => {
         }) : createPlayer(player);
 
     const updateWinnerPointPlayer = (_game, playerId) => createGame({
+        ..._game,
         player1: handlePlayerScored(_game.player1, playerId, _game.player2.score.name),
         player2: handlePlayerScored(_game.player2, playerId, _game.player1.score.name),
     });
 
     const updateLoserPointPlayer = (_game, playerId) => createGame({
+        ..._game,
         player1: handleOpponentPlayerScored(_game.player1, playerId, _game.player2.score.name),
         player2: handleOpponentPlayerScored(_game.player2, playerId, _game.player1.score.name),
     });
