@@ -2,9 +2,9 @@
 
 ## Business Logic
 
-From http://codingdojo.org/kata/Tennis/
+Basado en la Kata http://codingdojo.org/kata/Tennis/
 
-Tennis
+Tennis Game
 
 This Kata is about implementing a simple tennis game. I came up with it while thinking about Wii tennis, where they have simplified tennis, so each set is one game.
 The scoring system is rather simple:
@@ -15,49 +15,54 @@ The scoring system is rather simple:
    
 3. If both have 40 the players are deuce. a. If the game is in deuce, the winner of a ball will have advantage and game ball. b. If the player with advantage wins the ball he wins the game c. If the player without advantage wins they are back at deuce.
 
-===== Alternate description of the rules per Wikipedia ( http://en.wikipedia.org/wiki/Tennis#Scoring ):
-
-1. A game is won by the first player to have won at least four points in total and at least two points more than the opponent.
-
-2. The running score of each game is described in a manner peculiar to tennis: scores from zero to three points are described as “love”, “fifteen”, “thirty”, and “forty” respectively.
-
-3. If at least three points have been scored by each player, and the scores are equal, the score is “deuce”.
-
-4. If at least three points have been scored by each side and a player has one more point than his opponent, the score of the game is “advantage” for the player in the lead.
-
 ## Business Logic implementation
-La lógica de negocio está repartida en 2 servicios:  `gameService` y `scoreService`. A continuación, se explica la lógica de ambos:
+The business logic is divided into 2 services:  `gameService` y `scoreService`. The logic of both is explained below.:
 
 ### scoreService
 
-Este servicio gestiona la lógica para gestionar los cambios de estado del score de los players. Para ello, implementa el patrón de diseño State siguiendo un paradigma funcional.
+This service manages the logic for managing changes in the state of the players' score. To do so, it implements the State design pattern following a functional style.
 
-Básicamente, tenemos una función por cada tipo de estado que pueda tomar score (Love, Thirteen, etc). Todos estas funciones devuelven un objeto con la misma interfaz, pero diferente comportamiento ([aquí](#score) para ver interfaz):
+Basically, we have one function for each type of state that score can take (Love, Thirteen, etc). All these functions return an object with the same interface, but different behaviour ([here](#score) to see the common interface):
 
-- name: Nombre identificativo del score
-- winBall: método que devuelve el score resultado de marcar un punto. Como entrada, espera recibir el score del rival.
-- loseBall: método que devuelve el score resultado de que el rival marque un punto. Como entrada, espera recibir el score del rival.
+- name: Identifying name of the score (Love, Thirteen, etc)
+- winBall: function that returns the score resulting from scoring a point. As input, it expects to receive the opponent's score.
+- loseBall: function that returns the score resulting from the opponent scoring a point. As input, it expects to receive the opponent's score.
 
 ### gameService
 
-Este servicio se encarga de gestionar el estado de un game cada vez que se marca un punto.
-Recibe como entrada el estado actual de un game y el id del jugador que ha marcado punto. Entonces, actualiza el score del jugador ganador y el del jugador perdedor, haciendo uso de la interfaz común de los score.
+This service is in charge of managing the status of a game every time a point is marked.
+It receives as input the current game state, and the id of the player who has scored a point. It then updates the winning player's score and the losing player's score, using the common score interface.
 
 ## Architecture
 
-La app es una API Rest creada con el framework Express, la cual está conectada a una base de datos MongoDB para persistir los datos de la aplicación.
+The app is a Rest API created with the Express framework, which is connected to a MongoDB database to persist the application data.
 
-### Rutas
+![alt API Architecture](./docs/live-coding.png)
 
-- **GET /game** Devuelve el estado actual de un game
-- **POST /game** Guarda un nuevo evento de tipo `new_game` en base de datos
-- **POST /game** Guarda un nuevo evento de tipo `game_point` en base de datos
+### Routes
 
-Más información en el swagger (http://localhost:400/api-docs)
+- **GET /game** Returns the current state of a game
+- **POST /game** Saves a new event of type `new_game` in database
+- **POST /game** Saves a new event of type `game_point` in database
+
+More information in the app Swagger docs (http://localhost:400/api-docs) and [Postman collection](./docs/postman/back-live-coding-challenge.postman_collection.json)
 
 ### MongoDB
 
-La base de datos solo tiene una colección `game_events` en donde se guardan los events de los juegos. Más info [aquí](#game-events).
+The database has only one collection `game_events` where the game events are stored. More information about game event entities [here](#game-events).
+
+## Project Structure
+
+All business logic is located in the `src` folder, divided into components. The main components are:
+
+- App: Express configuration.
+- Constants: app constants.
+- Errors: app custom errors.
+- Factories: factory functions to create the app entities.
+- MongoDB: MongoDB configuration.
+- Routes: API routes.
+- Services: services containing the app business logic.
+- Storage: functions to storage app data.
 
 ## Entities
 
@@ -111,17 +116,4 @@ La base de datos solo tiene una colección `game_events` en donde se guardan los
   "player2": {}
 }
 ```
-
-## Project Structure
-
-Toda la lógica de negocio se encuentra en la carpeta `src`, dividida en componentes. Los principales componentes son:
-
-- App: Configuración de express.
-- Constants: constantes de la aplicación.
-- Errors: custom errors de la aplicación.
-- Factories: funciones para crear las entidades de la aplicación.
-- MongoDB: configuración de mongodb.
-- Routes: rutas de la API.
-- Services: servicios con la lógica de negocio.
-- Storage: funciones para persistir los datos.
 
