@@ -1,10 +1,11 @@
+const { join } = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./docs/swagger/swagger.yml');
+const swaggerDocument = YAML.load(join(__dirname, '../../docs/swagger/swagger.yml'));
 
 module.exports = () => {
     const port = process.env.PORT || 4000;

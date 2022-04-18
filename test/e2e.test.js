@@ -3,6 +3,8 @@ const { createNewGameEvent, createGamePointEvent } = require('../src/factories/g
 const ScoreNames = require('../src/constants/ScoreNames');
 const system = require('../system');
 
+window.XMLHttpRequest = false;
+
 describe('Service Tests', () => {
     let request;
     let collection;
@@ -36,6 +38,7 @@ describe('Service Tests', () => {
 
             expect(response.headers['content-type']).toBe('application/json; charset=utf-8');
             expect(response.body).toStrictEqual({
+                id: 1,
                 player1: {
                     id: 1,
                     score: {
