@@ -1,5 +1,6 @@
 module.exports = () => {
-    const createGame = ({ player1, player2 }) => ({
+    const createGame = ({ id, player1, player2 }) => ({
+        id,
         player1,
         player2
     });

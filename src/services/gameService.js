@@ -34,6 +34,18 @@ module.exports = ({ storage, scoreService }) => {
         return game;
     };
 
+    const getInitialGameState = (id, player1Id, player2Id) => createGame({
+        id,
+        player1: createPlayer({
+            id: player1Id,
+            score: scoreService.createLoveScore(),
+        }),
+        player2: createPlayer({
+            id: player2Id,
+            score: scoreService.createLoveScore(),
+        }),
+    });
+
     const getGame = async (id) => {
         const gameEvents = await storage.getGameEvents(id);
 
@@ -45,22 +57,11 @@ module.exports = ({ storage, scoreService }) => {
 
         const gamePoints = gameEvents.filter(event => event.type === GameEventTypes.GamePoint);
 
-        let game = getInitialGameState(newGame.player1Id, newGame.player2Id);
+        let game = getInitialGameState(id, newGame.player1Id, newGame.player2Id);
         game = gamePoints.reduce((_game, event) => addScoreEvent(_game)(event.playerId), game);
 
         return game;
     }
-
-    const getInitialGameState = (player1Id, player2Id) => createGame({
-        player1: createPlayer({
-            id: player1Id,
-            score: scoreService.createLoveScore(),
-        }),
-        player2: createPlayer({
-            id: player2Id,
-            score: scoreService.createLoveScore(),
-        }),
-    });
 
     const storeGame = async (args) => storage.saveGameEvent(createNewGameEvent(args));
 
