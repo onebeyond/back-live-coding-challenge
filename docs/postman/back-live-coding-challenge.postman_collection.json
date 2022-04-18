@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "9063664d-7e76-402f-a4bf-a0605bbf90da",
+		"name": "back-live-coding-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/game/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"game",
+						"1"
+					]
+				},
+				"description": "Get a game"
+			},
+			"response": []
+		},
+		{
+			"name": "Post new game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"player1Id\": 1,\n    \"player2Id\": 2,\n    \"timestamp\": \"2022-04-04T16:07:52Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post game point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"playerId\": 1,\n    \"timestamp\": \"2022-04-05T10:29:52Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/game/point",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"game",
+						"point"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
