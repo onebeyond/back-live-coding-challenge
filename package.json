@@ -16,7 +16,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
-    "mongodb": "^4.4.1"
+    "mongodb": "^4.4.1",
+    "swagger-ui-express": "^4.3.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "jest": "^26.6.3",
