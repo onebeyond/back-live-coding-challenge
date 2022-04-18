@@ -18,6 +18,10 @@ describe('Storage Tests', () => {
         await mongodb.gameEvents.deleteMany({});
     });
 
+    afterAll(async () => {
+        await mongodb.closeConnection();
+    })
+
     describe('getGameEvents', () => {
         it('should return all game events associated to certain id ordered by ts', async () => {
             const gameId = 1;

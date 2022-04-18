@@ -16,11 +16,14 @@ module.exports = () => {
     app.use(cors());
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         console.log(`Tennis Game listening on port ${port}`)
     });
 
-    return app;
+    return {
+        app,
+        server
+    };
 }
 
 

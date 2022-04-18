@@ -1,16 +1,18 @@
+window.XMLHttpRequest = false;
+
 const supertest = require('supertest');
 const { createNewGameEvent, createGamePointEvent } = require('../src/factories/gameEventFactory')();
 const ScoreNames = require('../src/constants/ScoreNames');
-const system = require('../system');
-
-window.XMLHttpRequest = false;
+const system = require('../system')();
 
 describe('Service Tests', () => {
     let request;
     let collection;
+    let mongo;
 
     beforeAll(async () => {
-        const { app, mongodb } = await system();
+        const { app, mongodb } = await system.start();
+        mongo = mongodb;
         collection = mongodb.gameEvents;
         request = supertest(app);
     });
@@ -18,6 +20,10 @@ describe('Service Tests', () => {
     beforeEach(async () => {
         await collection.deleteMany();
     });
+
+    afterAll(async() => {
+        await system.stop();
+    })
 
     describe('GET /game/:id tests', () => {
         it('should return a game', async () => {
