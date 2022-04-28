@@ -1,11 +1,11 @@
 module.exports = () => {
-    const createGame = ({ id, player1, player2 }) => ({
-        id,
-        player1,
-        player2
-    });
+  const createGame = ({ id, player1, player2 }) => ({
+    id,
+    player1,
+    player2,
+  });
 
-    return {
-        createGame
-    }
-}
+  return {
+    createGame,
+  };
+};

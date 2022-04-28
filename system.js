@@ -8,39 +8,38 @@ const storageComponent = require('./src/storage');
 const mongoDBComponent = require('./src/mongodb');
 
 module.exports = () => {
-    let sys = {};
+  let sys = {};
 
-    const start = async () => {
-        const config = configModule();
-        const mongodb = await mongoDBComponent({ config: config.mongodb });
-        const storage = storageComponent({ mongodb });
-        const scoreService = scoreServiceComponent({ storage });
-        const gameService = gameServiceComponent({ storage, scoreService });
-        const { app, server } = appModule();
-        routes({ app, gameService });
+  const start = async () => {
+    const config = configModule();
+    const mongodb = await mongoDBComponent({ config: config.mongodb });
+    const storage = storageComponent({ mongodb });
+    const scoreService = scoreServiceComponent({ storage });
+    const gameService = gameServiceComponent({ storage, scoreService });
+    const { app, server } = appModule();
+    routes({ app, gameService });
 
-        sys = {
-            config,
-            mongodb,
-            storage,
-            scoreService,
-            gameService,
-            routes,
-            app,
-            server,
-        };
-
-        return sys;
+    sys = {
+      config,
+      mongodb,
+      storage,
+      scoreService,
+      gameService,
+      routes,
+      app,
+      server,
     };
 
-    const stop = async () => {
-        await sys.mongodb.closeConnection();
-        await sys.server.close();
-    }
+    return sys;
+  };
 
+  const stop = async () => {
+    await sys.mongodb.closeConnection();
+    await sys.server.close();
+  };
 
-    return {
-        start,
-        stop,
-    };
+  return {
+    start,
+    stop,
+  };
 };

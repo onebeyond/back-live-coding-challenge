@@ -4,11 +4,14 @@ const { createPlayer } = require('../factories/playerFactory')();
 const ScoreNames = require('../constants/ScoreNames');
 
 const scoreService = require('./scoreService')();
+
 const storageMock = {
   getGameEvents: jest.fn(),
   saveGameEvent: jest.fn(),
 };
-const { getGame, storeGame, storeGamePoint, addScoreEvent } = require('./gameService')({ scoreService, storage: storageMock });
+const {
+  getGame, storeGame, storeGamePoint, addScoreEvent,
+} = require('./gameService')({ scoreService, storage: storageMock });
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -164,7 +167,9 @@ describe('Game Service', () => {
 
     it('should be Fifteen-Love if game is Love-Love and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
       ]);
 
@@ -176,7 +181,9 @@ describe('Game Service', () => {
 
     it('should be Thirty-Love if game is Fifteen-Love and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
       ]);
@@ -189,7 +196,9 @@ describe('Game Service', () => {
 
     it('should be Forty-Love if game is Thirty-Love and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -203,7 +212,9 @@ describe('Game Service', () => {
 
     it('should be Deuce-Deuce if game is Thirty-Forty and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -220,7 +231,9 @@ describe('Game Service', () => {
 
     it('should win the game if game is Forty-Love and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -235,7 +248,9 @@ describe('Game Service', () => {
 
     it('should be Advantage-Deuce if game is Deuce-Deuce and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -253,7 +268,9 @@ describe('Game Service', () => {
 
     it('should be Deuce-Deuce if game is Advantage-Deuce and player 2 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -272,7 +289,9 @@ describe('Game Service', () => {
 
     it('should win the game if game is Advantage-Deuce and player 1 scores', async () => {
       storageMock.getGameEvents.mockReturnValueOnce([
-        createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs }),
+        createNewGameEvent({
+          id: gameId, player1Id, player2Id, ts: currentTs,
+        }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
         createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
         createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
@@ -304,7 +323,9 @@ describe('Game Service', () => {
     const currentTs = new Date();
 
     it('should store a new game', async () => {
-      const newGameEvent = createNewGameEvent({ id: gameId, player1Id, player2Id, ts: currentTs });
+      const newGameEvent = createNewGameEvent({
+        id: gameId, player1Id, player2Id, ts: currentTs,
+      });
       await storeGame(newGameEvent);
 
       expect(storageMock.saveGameEvent.mock.calls[0][0]).toStrictEqual(newGameEvent);
@@ -324,5 +345,3 @@ describe('Game Service', () => {
     });
   });
 });
-
-

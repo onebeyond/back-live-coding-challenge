@@ -1,10 +1,10 @@
 module.exports = () => {
-    const createPlayer = ({ id, score }) => ({
-        id,
-        score
-    });
+  const createPlayer = ({ id, score }) => ({
+    id,
+    score,
+  });
 
-    return {
-        createPlayer
-    }
-}
+  return {
+    createPlayer,
+  };
+};
