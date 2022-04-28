@@ -7,7 +7,8 @@
     "infra:up": "docker-compose --file ./docker/docker-compose.yml up -d --force-recreate",
     "infra:down": "docker-compose --file ./docker/docker-compose.yml down",
     "start": "node index.js",
-    "test": "jest .",
+    "test:unit": "jest ./src",
+    "test:e2e": "jest ./test",
     "lint": "eslint .",
     "prepare": "husky install"
   },
