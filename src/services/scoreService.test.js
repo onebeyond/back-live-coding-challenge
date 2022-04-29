@@ -1,5 +1,10 @@
 const {
-  createLoveScore, createFifteenScore, createThirtyScore, createFortyScore, createDeuceScore, createAdvantageScore,
+  createLoveScore,
+  createFifteenScore,
+  createThirtyScore,
+  createFortyScore,
+  createDeuceScore,
+  createAdvantageScore,
 } = require('./scoreService')();
 const ScoreName = require('../constants/ScoreNames');
 
