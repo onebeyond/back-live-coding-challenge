@@ -1,18 +1,11 @@
-const { NotFoundError } = require('../errors');
-
 module.exports = ({ app, gameService }) => {
-  app.get('/game/:id', async (req, res, next) => {
-    try {
-      const { params: { id } } = req;
-      const game = await gameService.getGame(Number(id));
-      return res.send(game);
-    } catch (error) {
-      if (error instanceof NotFoundError) {
-        return res.status(404).send(error.message);
-      }
-      next(error);
-    }
-  });
+    app.get('/game/:id', async (/*req, res, next*/) => {
+        //TODO: add logic to get a game
+        /*
+            TIP: you can delegate the business logic to /src/services/gameService.js.
+            There, you have all the needed logic to implement this route (with the logic in 'gameService' and 'storage', injected in the component)
+         */
+    });
 
   app.post('/game', async (req, res, next) => {
     try {

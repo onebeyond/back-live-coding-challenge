@@ -69,23 +69,6 @@ describe('Storage Tests', () => {
   });
 
   describe('saveGameEvent', () => {
-    it('should store an event', async () => {
-      const gameId = 1;
-      const player1Id = 1;
-      const player2Id = 2;
-
-      const gameEvent = createNewGameEvent({
-        id: gameId,
-        player1Id,
-        player2Id,
-        ts: new Date().toISOString(),
-      });
-
-      await storage.saveGameEvent(gameEvent);
-
-      const gameEventStored = await mongodb.gameEvents.findOne({ id: gameId });
-
-      expect(gameEventStored).toStrictEqual(gameEvent);
-    });
+        // TODO Add tests for saveGameEvent
   });
 });
