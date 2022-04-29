@@ -1,4 +1,3 @@
-const http = require('http');
 const appModule = require('./src/app');
 const routes = require('./src/routes');
 const configModule = require('./config');

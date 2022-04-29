@@ -10,7 +10,7 @@ module.exports = ({ app, gameService }) => {
       if (error instanceof NotFoundError) {
         return res.status(404).send(error.message);
       }
-      next(error);
+      return next(error);
     }
   });
 
@@ -20,7 +20,7 @@ module.exports = ({ app, gameService }) => {
       await gameService.storeGame(body);
       return res.send();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
 
@@ -30,7 +30,7 @@ module.exports = ({ app, gameService }) => {
       await gameService.storeGamePoint(body);
       return res.send();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
 };

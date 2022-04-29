@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 window.XMLHttpRequest = false;
 
 const supertest = require('supertest');
@@ -8,11 +9,9 @@ const system = require('../system')();
 describe('Service Tests', () => {
   let request;
   let collection;
-  let mongo;
 
   beforeAll(async () => {
     const { app, mongodb } = await system.start();
-    mongo = mongodb;
     collection = mongodb.gameEvents;
     request = supertest(app);
   });
@@ -36,8 +35,12 @@ describe('Service Tests', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
       ]);
 
       const response = await request

@@ -170,7 +170,9 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -184,8 +186,12 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -199,9 +205,15 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -215,12 +227,24 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 6000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 6000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -234,10 +258,18 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 4000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 4000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -251,13 +283,27 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -271,14 +317,30 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 8000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 8000) },
+        ),
       ]);
 
       const game = await getGame(gameId);
@@ -292,14 +354,30 @@ describe('Game Service', () => {
         createNewGameEvent({
           id: gameId, player1Id, player2Id, ts: currentTs,
         }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) }),
-        createGamePointEvent({ id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) }),
-        createGamePointEvent({ id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 8000) }),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 1000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 2000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 3000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 4000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player2Id, ts: new Date(currentTs.getTime() + 5000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 6000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 7000) },
+        ),
+        createGamePointEvent(
+          { id: gameId, playerId: player1Id, ts: new Date(currentTs.getTime() + 8000) },
+        ),
       ]);
 
       const game = await getGame(gameId);

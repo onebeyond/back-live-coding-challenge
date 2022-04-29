@@ -1,4 +1,4 @@
-const { createNewGameEvent, createGamePointEvent, GameEvents } = require('../factories/gameEventFactory')();
+const { createNewGameEvent, createGamePointEvent } = require('../factories/gameEventFactory')();
 
 const config = require('../../config')();
 const mongodbComponent = require('../mongodb');
