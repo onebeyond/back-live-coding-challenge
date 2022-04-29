@@ -8,7 +8,7 @@ The app already has the following features:
 
 1. Basic business logic (more info [here](#business-logic-implementation)).
 2. Unit tests with [jest](https://jestjs.io/) of the implemented functionalities.
-3. e2e tests with [Cypress](https://www.cypress.io/) of the implemented functionalities.
+3. e2e tests with [jest](https://jestjs.io/) and [supertest](https://www.npmjs.com/package/supertest) of the implemented functionalities.
 
 ## ℹ️ Useful information
 
