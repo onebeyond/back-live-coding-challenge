@@ -69,7 +69,7 @@ With your teammates’ help, you must complete the tasks given to the highest po
 4. Through __TDD__ add into the file `storage.js` the necessary logic to store the scoreboard.
 5. Through __TDD__ add into the file `routes.js` an endpoint to obtain the scoreboard.
 
-##  📚TL:DR;
+##  📚TL;DR;
 
 ### Business Logic implementation
 
