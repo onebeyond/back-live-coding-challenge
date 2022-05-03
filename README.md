@@ -100,7 +100,7 @@ The app is a Rest API created with the [express framework](https://expressjs.com
 #### Routes
 
 - **`GET /game`**: returns the current state of a game.
-- **`POST /game`: saves a new event of type `new_game` in the database.
+- **`POST /game`**: saves a new event of type `new_game` in the database.
 - **`POST /game`**: saves a new event of type `game_point` in the database.
 
 More information in the app Swagger docs (http://localhost:400/api-docs) and [Postman collection](./docs/postman/back-live-coding-challenge.postman_collection.json)
