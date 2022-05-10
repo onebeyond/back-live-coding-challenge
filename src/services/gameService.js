@@ -50,6 +50,13 @@ module.exports = ({ storage, scoreService }) => {
 
   const storeGamePoint = async (args) => storage.saveGameEvent(createGamePointEvent(args));
 
+  // TODO: handle new route business logic here
+  /*
+    const getGame = async (id) => {
+      ...
+    };
+   */
+
   return {
     storeGame,
     storeGamePoint,

@@ -6,6 +6,11 @@ module.exports = ({ app, gameService }) => {
         There, you have all the needed logic to implement this route
         (with the logic in 'gameService' and 'storage', injected in the component)
      */
+    /*
+      ... // get input params, validation, sanitization, etc
+      await gameService.getGame(id);
+      ...// return solution, handle errors
+     */
   });
 
   app.post('/game', async (req, res, next) => {
