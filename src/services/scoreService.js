@@ -1,9 +1,12 @@
 const ScoreNames = require('../constants/ScoreNames');
 const { createScore } = require('../factories/scoreFactory')();
 
-const createLoveScore = () => createScore(ScoreNames.Love, createFifteenScore);
+const createLoveScore = () => createScore({ name: ScoreNames.Love, winBall: createFifteenScore });
 
-const createFifteenScore = () => createScore(ScoreNames.Fifteen, createThirtyScore);
+const createFifteenScore = () => createScore({
+  name: ScoreNames.Fifteen,
+  winBall: createThirtyScore,
+});
 
 const createFortyScore = () => {
   const loseBall = (opponentPlayerScore) => {
@@ -13,10 +16,10 @@ const createFortyScore = () => {
     return createFortyScore();
   };
 
-  return createScore(ScoreNames.Forty, createGameWinScore, loseBall);
+  return createScore({ name: ScoreNames.Forty, winBall: createGameWinScore, loseBall });
 };
 
-const createGameWinScore = () => createScore(ScoreNames.GameWin);
+const createGameWinScore = () => createScore({ name: ScoreNames.GameWin });
 
 const createThirtyScore = () => {
   const winBall = (opponentPlayerScore) => {
@@ -25,7 +28,7 @@ const createThirtyScore = () => {
     }
     return createFortyScore();
   };
-  return createScore(ScoreNames.Thirty, winBall);
+  return createScore({ name: ScoreNames.Thirty, winBall });
 };
 
 const createDeuceScore = () => {
@@ -35,7 +38,7 @@ const createDeuceScore = () => {
     }
     return createAdvantageScore();
   };
-  return createScore(ScoreNames.Deuce, winBall);
+  return createScore({ name: ScoreNames.Deuce, winBall });
 };
 
 const createAdvantageScore = () => {
@@ -45,7 +48,7 @@ const createAdvantageScore = () => {
     }
     return createAdvantageScore();
   };
-  return createScore(ScoreNames.Advantage, createGameWinScore, loseBall);
+  return createScore({ name: ScoreNames.Advantage, winBall: createGameWinScore, loseBall });
 };
 
 module.exports = () => ({
