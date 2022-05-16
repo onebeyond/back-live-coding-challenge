@@ -1,7 +1,7 @@
 const { createNewGameEvent, createGamePointEvent } = require('../factories/gameEventFactory')();
 const { createGame } = require('../factories/gameFactory')();
 const { createPlayer } = require('../factories/playerFactory')();
-const ScoreNames = require('../constants/ScoreNames');
+const { createScore } = require('../factories/scoreFactory')();
 
 const scoreService = require('./scoreService')();
 
@@ -17,143 +17,53 @@ beforeEach(() => {
 
 describe('Game Service', () => {
   describe('addScoreEvent', () => {
+    const gameId = 1;
     const player1Id = 1;
     const player2Id = 2;
 
-    it('should be Fifteen-Love if game is Love-Love and player 1 scores', () => {
+    const createMockScore = (name) => {
+      const winBall = jest.fn();
+      const loseBall = jest.fn();
+      return createScore({
+        name,
+        winBall: winBall.mockReturnValue(createScore({ name, winBall, loseBall })),
+        loseBall: loseBall.mockReturnValue(createScore({ name, winBall, loseBall })),
+      });
+    };
+
+    it('should apply "winBall" event to player1 if player1 scores', () => {
       let game = createGame({
+        id: gameId,
         player1: createPlayer({
           id: player1Id,
-          score: scoreService.createLoveScore(),
+          score: createMockScore('player1Score'),
         }),
         player2: createPlayer({
           id: player2Id,
-          score: scoreService.createLoveScore(),
+          score: createMockScore('player3Score'),
         }),
       });
       game = addScoreEvent(game)(player1Id);
 
-      expect(game.player1.score.name).toBe(ScoreNames.Fifteen);
-      expect(game.player2.score.name).toBe(ScoreNames.Love);
+      expect(game.player1.score.winBall).toHaveBeenCalledTimes(1);
+      expect(game.player1.score.loseBall).toHaveBeenCalledTimes(0);
     });
 
-    it('should be Thirty-Love if game is Fifteen-Love and player 1 scores', () => {
+    it('should apply "looseBall" event to player2 if player1 scores', () => {
       let game = createGame({
         player1: createPlayer({
           id: player1Id,
-          score: scoreService.createFifteenScore(),
+          score: createMockScore('player1Score'),
         }),
         player2: createPlayer({
           id: player2Id,
-          score: scoreService.createLoveScore(),
+          score: createMockScore('player2Score'),
         }),
       });
       game = addScoreEvent(game)(player1Id);
 
-      expect(game.player1.score.name).toBe(ScoreNames.Thirty);
-      expect(game.player2.score.name).toBe(ScoreNames.Love);
-    });
-
-    it('should be Forty-Love if game is Thirty-Love and player 1 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createThirtyScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createLoveScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player1Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.Forty);
-      expect(game.player2.score.name).toBe(ScoreNames.Love);
-    });
-
-    it('should be Deuce-Deuce if game is Thirty-Forty and player 1 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createThirtyScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createFortyScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player1Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.Deuce);
-      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-    });
-
-    it('should win the game if game is Forty-Love and player 1 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createFortyScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createLoveScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player1Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.GameWin);
-      expect(game.player2.score.name).toBe(ScoreNames.Love);
-    });
-
-    it('should be Advantage-Deuce if game is Deuce-Deuce and player 1 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createDeuceScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createDeuceScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player1Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.Advantage);
-      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-    });
-
-    it('should be Deuce-Deuce if game is Advantage-Deuce and player 2 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createAdvantageScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createDeuceScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player2Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.Deuce);
-      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
-    });
-
-    it('should win the game if game is Advantage-Deuce and player 1 scores', () => {
-      let game = createGame({
-        player1: createPlayer({
-          id: player1Id,
-          score: scoreService.createAdvantageScore(),
-        }),
-        player2: createPlayer({
-          id: player2Id,
-          score: scoreService.createDeuceScore(),
-        }),
-      });
-      game = addScoreEvent(game)(player1Id);
-
-      expect(game.player1.score.name).toBe(ScoreNames.GameWin);
-      expect(game.player2.score.name).toBe(ScoreNames.Deuce);
+      expect(game.player2.score.loseBall).toHaveBeenCalledTimes(1);
+      expect(game.player2.score.winBall).toHaveBeenCalledTimes(0);
     });
   });
 
