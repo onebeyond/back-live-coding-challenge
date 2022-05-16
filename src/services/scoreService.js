@@ -31,15 +31,7 @@ const createThirtyScore = () => {
   return createScore({ name: ScoreNames.Thirty, winBall });
 };
 
-const createDeuceScore = () => {
-  const winBall = (opponentPlayerScore) => {
-    if (opponentPlayerScore === ScoreNames.Advantage) {
-      return createDeuceScore();
-    }
-    return createAdvantageScore();
-  };
-  return createScore({ name: ScoreNames.Deuce, winBall });
-};
+const createDeuceScore = () => createScore({ name: ScoreNames.Deuce });
 
 const createAdvantageScore = () => {
   const loseBall = (opponentPlayerScore) => {
