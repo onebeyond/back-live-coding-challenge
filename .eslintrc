@@ -1,5 +1,15 @@
 {
   "extends": "airbnb/base",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "ecmaVersion": 2020
+  },
+  "env": {
+    "jest": true,
+    "es6": true,
+    "node": true
+  },
   "rules": {
     "id-length": 0,
     "no-shadow": [
@@ -8,6 +18,14 @@
         "allow": [
           "err"
         ]
+      }
+    ],
+    "no-use-before-define": [
+      "warn",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": false
       }
     ]
   }

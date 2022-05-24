@@ -4,12 +4,34 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest ."
+    "infra:up": "docker-compose --file ./docker/docker-compose.yml up -d --force-recreate",
+    "infra:down": "docker-compose --file ./docker/docker-compose.yml down",
+    "start": "node index.js",
+    "test:unit": "jest ./src",
+    "test:e2e": "jest ./test",
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "mongodb": "^4.4.1",
+    "swagger-ui-express": "^4.3.0",
+    "yamljs": "^0.3.0"
+  },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "husky": "^7.0.4",
+    "jest": "^26.6.3",
+    "supertest": "^6.2.2"
   }
 }
