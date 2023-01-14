@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
